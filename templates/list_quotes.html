@@ -1,8 +1,6 @@
 {% extends "layout.html" %}
 
-{% block content %}
-<div class="container">
-
+{% block container %}
 {% if channels or submitters %}
 <div class="dropdown">
 
@@ -48,5 +46,5 @@
 		<h3>Unbelievable.  No quotes so far.</h3>
 	{% endfor %}
 	</ul>
-</div>
+
 {% endblock %}

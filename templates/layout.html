@@ -1,18 +1,19 @@
-{%- extends "bootstrap/base.html" %}
+{% extends "bootstrap/base.html" %}
 
-{% block title %}PyQdbS{% endblock %}
+{% block title %}- PyQdbS{% endblock %}
 
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-{% block head %}
-{{ super() }}
-{% endblock %}
-
-{% block navbar %}
-{{ nav.top.render() }}
-{% endblock %}
+{% block navbar %}{{ nav.top.render() }}{% endblock %}
 
 
-<div class=footer>
-&copy; Copyright 2017, GliTch_ Is Mad Studios
+{% block content %}
+<div class="container">
+	{% block container %}{% endblock container %}
 </div>
+<footer class="container">
+	<div class="container">
+		<p class="text-muted">Copyright &copy; 2017, GliTch_ Is Mad Studios<br></p>
+	</div>
+</footer>
+{% endblock %}

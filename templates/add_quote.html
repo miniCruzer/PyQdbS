@@ -1,8 +1,8 @@
 {% from "_formhelpers.html" import render_field %}
 {% extends "layout.html" %}
 {% import "bootstrap/utils.html" as utils %}
-2570
-{% block content %}
+
+{% block container %}
 
     {%- with messages = get_flashed_messages(with_categories=True) %}
     {%- if messages %}
@@ -14,7 +14,7 @@
     {%- endif %}
     {%- endwith %}
 
-<div class="container">
+
     <h1>Add a Quote</h1>
     <p>Before submitting, please strip off any timestamps, trim useless parts, and remove trailing laughs.</p>
     <p>All HTML gets escaped before submission, so don't bother trying anything stupid. c:</p>
@@ -27,5 +27,5 @@
         <input type="submit" class="btn btn-info" name="Submit" value="Submit Quote">
         
     </form>
-</div>
+
 {% endblock %}

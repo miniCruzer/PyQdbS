@@ -16,4 +16,3 @@ class AddQuote(Form):
         , [ validators.required() ]
         , description=u"The actual quote that we're interested in."
     )
-

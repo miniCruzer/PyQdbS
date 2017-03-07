@@ -1,27 +1,23 @@
-{%- extends "layout.html" %}
+{% extends "layout.html" %}
 {% import "bootstrap/utils.html" as utils %}
 
+{% block title %}Hello {{ super() }} {% endblock %}
 
-{% block content %}
-<div class="container">
 
-    {%- with messages = get_flashed_messages(with_categories=True) %}
-    {%- if messages %}
-    <div class="row">
-        <div class="col-md-12">
-            {{ utils.flashed_messages(messages) }}
+{% block container %}
+    {%- with messages = get_flashed_messages(with_categories=True) -%}
+    {%- if messages -%}
+        <div class="row">
+            <div class="col-md-12">
+                {{ utils.flashed_messages(messages) }}
+            </div>
         </div>
-    </div>
-    {%- endif %}
-    {%- endwith %}
+    {%- endif -%}
+    {% endwith -%}
 
     <div class="jumbotron">
-
-        <h1>Hi, welcome to this stupid quote system.</h1>
-        <p>Have a look around.</p>
-
+        <h1>Hi, this is one of those stupid quote systems.</h1>
+        <h2>Have a look around.</h2>
     </div>
 
-</div> 
-
-{% endblock %}
+{%- endblock %}

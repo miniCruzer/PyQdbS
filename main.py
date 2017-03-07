@@ -18,11 +18,14 @@ import utils
 app = Flask(__name__)
 Bootstrap(app)
 
+# loads default config, then gets overriden with some
+# hard coded defaults, which than then be overriden
+# with the config file pointed to by PYQDBS_SETTINGS
+
 app.config.from_object(__name__)
 app.config.update(dict(
-    DATABASE=os.path.join(app.root_path, "qdbs.db"),
+    DATABASE=os.path.join(app.root_path, "qdbs.db")
 ))
-
 app.config.from_envvar("PYQDBS_SETTINGS", silent=False)
 
 nav = Nav()
@@ -33,8 +36,9 @@ nav.register_element("top", Navbar(
     View("Show Quotes", 'show_quotes'),
 
     Subgroup("Other Stuff",
+        Link("GitHub", "https://github.com/miniCruzer/PyQdbS"),
         Link("AlphaChat", "https://www.alphachat.net/"),
-        Link("Shitposted", "https://shitposted.com/")
+        Link("Shitposted", "https://shitposted.com/"),
     )
 ))
 
@@ -149,4 +153,4 @@ def show_quote_submitter(nick):
 nav.init_app(app)
 
 if __name__ == "__main__":
-    app.run()
+        app.run()
