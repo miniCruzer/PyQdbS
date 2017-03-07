@@ -1,26 +1,18 @@
 #!/sbin/openrc-run
 
+PYQBDS_CFG="/var/lib/qdbs/pyqdbs/pyqdbs.cfg"
+
 command="/usr/bin/python3.5"
 command_args="/var/lib/qdbs/pyqdbs/qdbs.fcgi"
 command_dir="/var/lib/qdbs/pyqdbs/"
 command_user="qdbs"
 command_background="yes"
 pidfile="/run/${SVCNAME}.pid"
-start_stop_daemon_args="--chdir ${command_dir} -w 400"
+start_stop_daemon_args="--chdir ${command_dir} -w 400 --env PYQDBS_SETTINGS=${PYQDBS_CFG}"
 
 depend()
 {
         use     dns net time
-}
-
-start_pre()
-{
-
-	if [ ! -d "/run/qdbs/" ]; then
-		mkdir /run/qdbs/
-	fi
-
-	chown -R qdbs:qdbs /run/qdbs/
 }
 
 start_post()
