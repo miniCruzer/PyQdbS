@@ -1,0 +1,31 @@
+{% from "_formhelpers.html" import render_field %}
+{% extends "layout.html" %}
+{% import "bootstrap/utils.html" as utils %}
+2570
+{% block content %}
+
+    {%- with messages = get_flashed_messages(with_categories=True) %}
+    {%- if messages %}
+    <div class="row">
+        <div class="col-md-12">
+            {{ utils.flashed_messages(messages) }}
+        </div>
+    </div>
+    {%- endif %}
+    {%- endwith %}
+
+<div class="container">
+    <h1>Add a Quote</h1>
+    <p>Before submitting, please strip off any timestamps, trim useless parts, and remove trailing laughs.</p>
+    <p>All HTML gets escaped before submission, so don't bother trying anything stupid. c:</p>
+    <form method=post>
+        <dl>
+        {{ render_field(form.channel, id="channel-name", autofocus="on", placeholder="Channel", required="on", class="form-control") }}
+        {{ render_field(form.nick, placeholder="Your Nickname", required="on", class="form-control") }}
+        {{ render_field(form.quote, autocomplete="off", cols="80", rows="20", placeholder="... something funny", required="on", class="form-control") }}
+        </dl>
+        <input type="submit" class="btn btn-info" name="Submit" value="Submit Quote">
+        
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,12 @@
+# python stuff
+__pycache__/
+venv
+*.pyc
+*.pyo
+
+# macOS
+.DS_Store
+
+# custom
+*.db
+pyqdbs.cfg
