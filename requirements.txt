@@ -1,3 +1,5 @@
 flask
-flask-bootstrap
-wtforms
+flask_bootstrap
+flask_nav
+flask_wtf
+flup6
