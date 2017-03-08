@@ -76,6 +76,12 @@ If you would like to use reCAPTCHA with PyQdbS, you need to register with Google
 This table is from the Flask-WTF documentation page [here](https://flask-wtf.readthedocs.io/en/latest/form.html#recaptcha).
 You can see more settings for the HTML forms in this application [here](https://flask-wtf.readthedocs.io/en/latest/config.html).
 
+## Database Backend
+
+As of writing this, only SQLite has been tested as the database backend. However, because SQLAlchemy contains dialect for PostgreSQL and MySQL, you might have success using a different database backend. If you add a setting to the PYQDBS_SETTINGS file called `SQLALCHEMY_DATABASE_URI` and point it to a PostgreSQL/MySQL URI, you could probably use that as a backend.
+
+If anyone has success with this, please let me know.
+
 ## Notice
 
 This is my first time working with Flask and Bootstrap. If you have any suggestions, or anything I'm doing is Not The Right Thing To Do, please open an issue.
