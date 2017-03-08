@@ -60,6 +60,21 @@ location @pyqdbs {
 }
 ```
 
+## reCAPTCHA
+
+If you would like to use reCAPTCHA with PyQdbS, you need to register with Google, and set the following settings in your PYQDBS_SETTINGS file.
+
+| Setting               |            | Description                                                                             |
+| ----------------------|------------|-----------------------------------------------------------------------------------------|
+| RECAPTCHA_PUBLIC_KEY 	| *required* | A public key.                                                                           |
+| RECAPTCHA_PRIVATE_KEY | *required* | A private key.                                                                          |
+| RECAPTCHA_API_SERVER 	| optional   | Specify your Recaptcha API server.                                                      |
+| RECAPTCHA_PARAMETERS 	| optional   | A dict of JavaScript (api.js) parameters.                                               |
+| RECAPTCHA_DATA_ATTRS 	| optional   | A dict of data attributes options. https://developers.google.com/recaptcha/docs/display |
+
+This table is from the Flask-WTF documentation page [here](https://flask-wtf.readthedocs.io/en/latest/form.html#recaptcha).
+You can see more settings for the HTML forms in this application [here](https://flask-wtf.readthedocs.io/en/latest/config.html).
+
 ## Notice
 
 This is my first time working with Flask and Bootstrap. If you have any suggestions, or anything I'm doing is Not The Right Thing To Do, please open an issue.
@@ -68,7 +83,7 @@ This is my first time working with Flask and Bootstrap. If you have any suggesti
 
 Some goals for the project. 
 
-- [ ] Anti-Spam 
+- [X] Anti-Spam
 - [ ] Admin feature (editing, deleting, quote approval)
 - [ ] Upvote / Downvote *
 - [ ] Auto-remove timestamps from Add Quote

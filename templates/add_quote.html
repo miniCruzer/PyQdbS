@@ -1,6 +1,6 @@
-{% from "_formhelpers.html" import render_field %}
 {% extends "layout.html" %}
 {% import "bootstrap/utils.html" as utils %}
+{% import "bootstrap/wtf.html" as wtf %}
 
 {% block title %}Add a Quote {{ super() }}{% endblock %}
 
@@ -16,18 +16,15 @@
     {%- endif %}
     {%- endwith %}
 
-
     <h1>Add a Quote</h1>
     <p>Before submitting, please strip off any timestamps, trim useless parts, and remove trailing laughs.</p>
     <p>All HTML gets escaped before submission, so don't bother trying anything stupid. c:</p>
-    <form method=post>
-        <dl>
-        {{ render_field(form.channel, id="channel-name", autofocus="on", placeholder="Channel", required="on", class="form-control") }}
-        {{ render_field(form.nick, placeholder="Your Nickname", required="on", class="form-control") }}
-        {{ render_field(form.quote, autocomplete="off", cols="80", rows="20", placeholder="... something funny", required="on", class="form-control") }}
-        </dl>
-        <input type="submit" class="btn btn-info" name="Submit" value="Submit Quote">
-        
+    <form class="form form-horizontal" method="post" role="form">
+        {{ wtf.form_field(form.channel) }}
+        {{ wtf.form_field(form.nick) }}
+        {{ wtf.form_field(form.quote, rows=20) }}
+        {{ wtf.form_field(form.recaptcha) }}
+        <input type="submit" class="btn btn-info" value="Submit Quote">
     </form>
 
 {% endblock %}

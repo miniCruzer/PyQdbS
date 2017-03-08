@@ -1,6 +1,7 @@
+from flask_wtf import FlaskForm, RecaptchaField
 from wtforms import *
 
-class AddQuote(Form):
+class AddQuote(FlaskForm):
 
     channel = StringField(""
         , [ validators.required() ]
@@ -16,3 +17,5 @@ class AddQuote(Form):
         , [ validators.required() ]
         , description=u"The actual quote that we're interested in."
     )
+
+    recaptcha = RecaptchaField()
