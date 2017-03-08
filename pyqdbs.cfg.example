@@ -1,3 +1,0 @@
-DEBUG = 1
-# make SECRET_KEY something *super secret*
-SECRET_KEY = 

@@ -26,10 +26,15 @@ All modules are available from PyPi.
 
 1. Clone this repository.
 2. Install the dependencies via `pip install -r requirements.txt`
-3. Initialize the database. You can run `flask initdb` to have this automated, **or** run `sqlite3 qdbs.db < schmeal.sql`.
-4. Create an environment variable called `PYQDBS_SETTINGS`, and make it point to a configuration file similar to the example.
+3. Initialize the database. You can run `flask initdb` to do this.
+4. Rename `PyQdbS/config.example.py` to `PyQdbS/config.py`.
 
 :warning:Change the SECRET_KEY in the config or sessions will not be secure, as they are cryptographically signed by Flask.:warning:
+
+### Configuration
+
+Edit the ProductionConfig class in `PyQdbS/config.py` and read the comments on each line to understand how each option works.
+
 
 ### Deploying
 
@@ -63,7 +68,7 @@ location @pyqdbs {
 
 ## reCAPTCHA
 
-If you would like to use reCAPTCHA with PyQdbS, you need to register with Google, and set the following settings in your PYQDBS_SETTINGS file.
+If you would like to use reCAPTCHA with PyQdbS, you need to register with Google, and set the following settings in your config.py file.
 
 | Setting               |            | Description                                                                             |
 | ----------------------|------------|-----------------------------------------------------------------------------------------|
@@ -75,12 +80,6 @@ If you would like to use reCAPTCHA with PyQdbS, you need to register with Google
 
 This table is from the Flask-WTF documentation page [here](https://flask-wtf.readthedocs.io/en/latest/form.html#recaptcha).
 You can see more settings for the HTML forms in this application [here](https://flask-wtf.readthedocs.io/en/latest/config.html).
-
-## Database Backend
-
-As of writing this, only SQLite has been tested as the database backend. However, because SQLAlchemy contains dialect for PostgreSQL and MySQL, you might have success using a different database backend. If you add a setting to the PYQDBS_SETTINGS file called `SQLALCHEMY_DATABASE_URI` and point it to a PostgreSQL/MySQL URI, you could probably use that as a backend.
-
-If anyone has success with this, please let me know.
 
 ## Notice
 
@@ -97,7 +96,7 @@ Some goals for the project.
 - [ ] RESTful API, probably Flask-Rest
 - [ ] Hidden Quotes  *
 - [X] Convert forms to use macros provided by `bootstrap/wtf.html`
-- [ ] Multiple database backend support (via SQLAlchemy/flask_sqlalchemy)
+- [X] Multiple database backend support (via SQLAlchemy/flask_sqlalchemy)
 - [X] Pagination support through the use of SQLAlchemy
 
 * = will break SQL schema

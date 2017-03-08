@@ -8,7 +8,7 @@ command_dir="/var/lib/qdbs/pyqdbs/"
 command_user="qdbs"
 command_background="yes"
 pidfile="/run/${SVCNAME}.pid"
-start_stop_daemon_args="--chdir ${command_dir} -w 400 --env PYQDBS_SETTINGS=${PYQDBS_CFG}"
+start_stop_daemon_args="--chdir ${command_dir} -w 400"
 
 depend()
 {

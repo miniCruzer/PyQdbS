@@ -10,3 +10,4 @@ venv
 # custom
 *.db
 pyqdbs.cfg
+config.py

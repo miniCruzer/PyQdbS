@@ -19,3 +19,6 @@ class AddQuote(FlaskForm):
     )
 
     recaptcha = RecaptchaField()
+
+class AddQuoteRecaptcha(AddQuote):
+    recaptcha = RecaptchaField()

@@ -20,11 +20,15 @@
     <p>Before submitting, please strip off any timestamps, trim useless parts, and remove trailing laughs.</p>
     <p>All HTML gets escaped before submission, so don't bother trying anything stupid. c:</p>
     <form class="form form-horizontal" method="post" role="form">
+        {{ form.csrf_token }}
         {{ wtf.form_field(form.channel) }}
         {{ wtf.form_field(form.nick) }}
         {{ wtf.form_field(form.quote, rows=20) }}
+        {% if form.recaptcha %}
         {{ wtf.form_field(form.recaptcha) }}
+        {% endif %}
         <input type="submit" class="btn btn-info" value="Submit Quote">
+        <br>
     </form>
 
 {% endblock %}
