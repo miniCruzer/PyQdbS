@@ -76,6 +76,6 @@ Some goals for the project.
 - [ ] Hidden Quotes  *
 - [ ] Convert forms to use macros provided by `bootstrap/wtf.html`
 - [ ] Multiple database backend support (via SQLAlchemy/flask_sqlalchemy)
-- [ ] Pagination support through the use of SQLAlchemy
+- [X] Pagination support through the use of SQLAlchemy
 
 * = will break SQL schema

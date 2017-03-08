@@ -51,6 +51,7 @@ class Quotes(db.Model):
         return "<Quote %i>" % self.id
 
 nav = Nav()
+
 nav.register_element("top", Navbar(
     "PyQdbS",
     View("Hello", 'hello'),
@@ -63,7 +64,6 @@ nav.register_element("top", Navbar(
         Link("Shitposted", "https://shitposted.com/"),
     )
 ))
-
 
 @app.cli.command("initdb")
 def initdb_command():
@@ -110,23 +110,26 @@ def get_submitters():
     for s in q.all():
         yield s[0]
 
-@app.route("/quotes")
-def show_quotes():
-    return render_template("list_quotes.html", quotes=Quotes.query.all(), channels=get_channels(), submitters=get_submitters())
+@app.route("/quotes/")
+@app.route("/quotes/<int:page>")
+def show_quotes(page=1):
+    return render_template("list_quotes.html", quotes=Quotes.query.paginate(page, 2), channels=get_channels(), submitters=get_submitters())
 
 @app.route("/quotes/id/<int:quote_id>")
 def show_quote_id(quote_id):
-    return render_template("list_quotes.html", quotes=[ Quotes.query.get(quote_id) ])
+    return render_template("list_quotes.html", quotes=Quotes.query.paginate(1, 2), channels=get_channels(), submitters=get_submitters())
 
 @app.route("/quotes/channel/<string:channel>")
-def show_quote_channel(channel):
+@app.route("/quotes/channel/<string:channel>/page/<int:page>")
+def show_quote_channel(channel, page=1):
     q = Quotes.query.filter(Quotes.channel == channel)
-    return render_template("list_quotes.html", quotes=q.all(), criteria="from %s" % channel)
+    return render_template("list_quotes.html", quotes=q.paginate(page, 2), criteria="from %s" % channel, channels=get_channels(), submitters=get_submitters())
 
 @app.route("/quotes/submitter/<string:nick>")
-def show_quote_submitter(nick):
+@app.route("/quotes/submitter/<string:nick>/page/<int:page>")
+def show_quote_submitter(nick, page=1):
     q = Quotes.query.filter(Quotes.nickname == nick)
-    return render_template("list_quotes.html", quotes=q.all(), criteria="submitted by %s" % nick)
+    return render_template("list_quotes.html", quotes=q.paginate(page, 2), criteria="submitted by %s" % nick, channels=get_channels(), submitters=get_submitters())
 
 nav.init_app(app)
 

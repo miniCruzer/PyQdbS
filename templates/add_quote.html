@@ -2,6 +2,8 @@
 {% extends "layout.html" %}
 {% import "bootstrap/utils.html" as utils %}
 
+{% block title %}Add a Quote {{ super() }}{% endblock %}
+
 {% block container %}
 
     {%- with messages = get_flashed_messages(with_categories=True) %}
