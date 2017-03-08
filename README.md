@@ -89,7 +89,7 @@ Some goals for the project.
 - [ ] Auto-remove timestamps from Add Quote
 - [ ] RESTful API, probably Flask-Rest
 - [ ] Hidden Quotes  *
-- [ ] Convert forms to use macros provided by `bootstrap/wtf.html`
+- [X] Convert forms to use macros provided by `bootstrap/wtf.html`
 - [ ] Multiple database backend support (via SQLAlchemy/flask_sqlalchemy)
 - [X] Pagination support through the use of SQLAlchemy
 
