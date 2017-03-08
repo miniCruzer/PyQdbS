@@ -26,9 +26,13 @@ Bootstrap(app)
 app.config.from_object(__name__)
 app.config.update(dict(
     SQLALCHEMY_TRACK_MODIFICATIONS=False,
-    SQLALCHEMY_DATABASE_URI="sqlite:////" + os.path.join(app.root_path, "qdbs.db")
+    SQLALCHEMY_DATABASE_URI="sqlite:////" + os.path.join(app.root_path, "qdbs.db"),
+    DEFAULT_QUOTES_PER_PAGE=15,
 ))
 app.config.from_envvar("PYQDBS_SETTINGS", silent=False)
+
+QUOTES_PER_PAGE = app.config['DEFAULT_QUOTES_PER_PAGE']
+
 db = SQLAlchemy(app)
 
 class Quotes(db.Model):
@@ -116,23 +120,23 @@ def redir_to_page():
 
 @app.route("/quotes/page/<int:page>")
 def show_quotes(page=1):
-    return render_template("list_quotes.html", quotes=Quotes.query.paginate(page, 2), channels=get_channels(), submitters=get_submitters())
+    return render_template("list_quotes.html", quotes=Quotes.query.paginate(page, ), channels=get_channels(), submitters=get_submitters())
 
 @app.route("/quotes/id/<int:quote_id>")
 def show_quote_id(quote_id):
-    return render_template("list_quotes.html", quotes=Quotes.query.paginate(1, 2), channels=get_channels(), submitters=get_submitters())
+    return render_template("list_quotes.html", quotes=Quotes.query.paginate(1, QUOTES_PER_PAGE), channels=get_channels(), submitters=get_submitters())
 
 @app.route("/quotes/channel/<string:channel>")
 @app.route("/quotes/channel/<string:channel>/page/<int:page>")
 def show_quote_channel(channel, page=1):
     q = Quotes.query.filter(Quotes.channel == channel)
-    return render_template("list_quotes.html", quotes=q.paginate(page, 2), criteria="from %s" % channel, channels=get_channels(), submitters=get_submitters())
+    return render_template("list_quotes.html", quotes=q.paginate(page, QUOTES_PER_PAGE), criteria="from %s" % channel, channels=get_channels(), submitters=get_submitters())
 
 @app.route("/quotes/submitter/<string:nick>")
 @app.route("/quotes/submitter/<string:nick>/page/<int:page>")
 def show_quote_submitter(nick, page=1):
     q = Quotes.query.filter(Quotes.nickname == nick)
-    return render_template("list_quotes.html", quotes=q.paginate(page, 2), criteria="submitted by %s" % nick, channels=get_channels(), submitters=get_submitters())
+    return render_template("list_quotes.html", quotes=q.paginate(page, QUOTES_PER_PAGE), criteria="submitted by %s" % nick, channels=get_channels(), submitters=get_submitters())
 
 nav.init_app(app)
 
