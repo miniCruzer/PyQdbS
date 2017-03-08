@@ -38,9 +38,9 @@
 	<ul class="list-group">
 	{% for quote in quotes %}
 		<li class="list-group-item">
-			<b>ID</b> <a href="{{ url_for('show_quote_id', quote_id=quote[0]) }}">{{ quote[0] }}</a> <b>
-			from</b>: <a href="{{ url_for('show_quote_channel', channel=quote[1]) }}">{{ quote[1] }}</a> 
-			<b>submitted by</b> <a href="{{ url_for('show_quote_submitter', nick=quote[2]) }}">{{ quote[2] }}</a> <b>on</b> {{ quote[3] }} UTC<br><pre>{{ quote[4] }}</pre>
+			<b>ID</b> <a href="{{ url_for('show_quote_id', quote_id=quote.id) }}">{{ quote.id }}</a> <b>
+			from</b>: <a href="{{ url_for('show_quote_channel', channel=quote.channel) }}">{{ quote.channel }}</a>
+			<b>submitted by</b> <a href="{{ url_for('show_quote_submitter', nick=quote.nickname) }}">{{ quote.nickname }}</a> <b>on</b> {{ quote.timestamp }} UTC<br><pre>{{ quote.quote }}</pre>
 		</li>
 	{% else %}
 		<h3>Unbelievable.  No quotes so far.</h3>

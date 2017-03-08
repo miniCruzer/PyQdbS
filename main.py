@@ -1,4 +1,4 @@
-import os, sqlite3
+import os
 
 from flask import Flask
 from flask import render_template
@@ -11,6 +11,7 @@ from flask import g
 from flask_nav import Nav
 from flask_nav.elements import *
 from flask_bootstrap import Bootstrap
+from flask_sqlalchemy import SQLAlchemy
 
 import forms
 import utils
@@ -24,9 +25,30 @@ Bootstrap(app)
 
 app.config.from_object(__name__)
 app.config.update(dict(
-    DATABASE=os.path.join(app.root_path, "qdbs.db")
+    SQLALCHEMY_TRACK_MODIFICATIONS=False,
+    SQLALCHEMY_DATABASE_URI="sqlite:////" + os.path.join(app.root_path, "qdbs.db")
 ))
 app.config.from_envvar("PYQDBS_SETTINGS", silent=False)
+db = SQLAlchemy(app)
+
+class Quotes(db.Model):
+
+    # id, channel, nickname, timestamp, quote
+
+    id = db.Column(db.Integer(), primary_key=True, autoincrement=True)
+    nickname = db.Column(db.String())
+    channel = db.Column(db.String())
+    quote = db.Column(db.String())
+    timestamp = db.Column(db.DateTime())
+    #score = db.Column('score', db.Integer)
+
+    def __init__(self, channel, nickname, quote):
+        self.channel = channel
+        self.nickname = nickname
+        self.quote = quote
+
+    def __repr__(self):
+        return "<Quote %i>" % self.id
 
 nav = Nav()
 nav.register_element("top", Navbar(
@@ -42,49 +64,24 @@ nav.register_element("top", Navbar(
     )
 ))
 
-def connect_db():
-    rv = sqlite3.connect(app.config['DATABASE'])
-    rv.row_factory = sqlite3.Row
-    return rv
-
-
-def get_db():
-    if not hasattr(g, "sqlite_db"):
-        g.sqlite_db = connect_db()
-    return g.sqlite_db
-
-
-@app.teardown_appcontext
-def close_db(error):
-    if hasattr(g, "sqlite_db"):
-        g.sqlite_db.close()
-
-
-def init_db():
-    db = get_db()
-    with app.open_resource("schema.sql", mode="r") as f:
-        db.cursor().executescript(f.read())
-    db.commit()
-
 
 @app.cli.command("initdb")
 def initdb_command():
-    init_db()
+    db.create_all()
     print("database initialized")
 
 
 def add_quote_fromform(form):
 
-    chan = form.channel.data
-    nick = form.nick.data
     text = form.quote.data
 
     if utils.has_color(text):
         text = utils.strip_color(text)
 
-    db = get_db()
-    db.execute("insert into quotes (channel, nickname, quote) values (?, ?, ?)", (chan, nick, text))
-    db.commit()
+    q = Quotes(form.channel.data, form.nick.data, text)
+
+    db.session.add(q)
+    db.session.commit()
 
 
 @app.route("/")
@@ -94,7 +91,6 @@ def hello():
 
 @app.route("/add", methods=[ "GET", "POST" ])
 def add_quote():
-
     form = forms.AddQuote(request.form)
 
     if request.method == 'POST' and form.validate():
@@ -105,50 +101,32 @@ def add_quote():
         return render_template("add_quote.html", form=form)
 
 def get_channels():
-    db = get_db()
-    cu = db.execute("select distinct channel from quotes")
-    channels = [ chan[0] for chan in cu.fetchall() ]
-    return channels
+    q = db.session.query(Quotes.channel.distinct().label("channel"))
+    for c in q.all():
+        yield c[0]
 
 def get_submitters():
-    db = get_db()
-    cu = db.execute("select distinct nickname from quotes")
-    submitter = [ nick[0] for nick in cu.fetchall() ]
-    return submitter
+    q = db.session.query(Quotes.nickname.distinct().label("nick"))
+    for s in q.all():
+        yield s[0]
 
 @app.route("/quotes")
 def show_quotes():
-    db = get_db()
-    cu = db.execute("select id, channel, nickname, timestamp, quote from quotes")
-    quotes = cu.fetchall()
-
-    return render_template("list_quotes.html", quotes=quotes, channels=get_channels(), submitters=get_submitters())
+    return render_template("list_quotes.html", quotes=Quotes.query.all(), channels=get_channels(), submitters=get_submitters())
 
 @app.route("/quotes/id/<int:quote_id>")
 def show_quote_id(quote_id):
-    db = get_db()
-    cu = db.execute("select id, channel, nickname, timestamp, quote from quotes where id=?", (quote_id,))
-    quotes = cu.fetchall()
-
-    return render_template("list_quotes.html", quotes=quotes)
+    return render_template("list_quotes.html", quotes=[ Quotes.query.get(quote_id) ])
 
 @app.route("/quotes/channel/<string:channel>")
 def show_quote_channel(channel):
-    if not channel.startswith('#'):
-        channel = '#' + channel
-    db = get_db()
-    cu = db.execute("select id, channel, nickname, timestamp, quote from quotes where channel=?", (channel,))
-    quotes = cu.fetchall()
-
-    return render_template("list_quotes.html", quotes=quotes, criteria="from %s" % channel)
+    q = Quotes.query.filter(Quotes.channel == channel)
+    return render_template("list_quotes.html", quotes=q.all(), criteria="from %s" % channel)
 
 @app.route("/quotes/submitter/<string:nick>")
 def show_quote_submitter(nick):
-    db = get_db()
-    cu = db.execute("select id, channel, nickname, timestamp, quote from quotes where nickname=?", (nick,))
-    quotes = cu.fetchall()
-
-    return render_template("list_quotes.html", quotes=quotes, criteria="submitted by %s" % nick)
+    q = Quotes.query.filter(Quotes.nickname == nick)
+    return render_template("list_quotes.html", quotes=q.all(), criteria="submitted by %s" % nick)
 
 nav.init_app(app)
 
