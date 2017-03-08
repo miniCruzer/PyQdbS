@@ -105,12 +105,12 @@ def add_quote():
         return render_template("add_quote.html", form=form)
 
 def get_channels():
-    q = db.session.query(Quotes.channel.distinct().label("channel"))
+    q = db.session.query(Quotes.channel.distinct())
     for c in q.all():
         yield c[0]
 
 def get_submitters():
-    q = db.session.query(Quotes.nickname.distinct().label("nick"))
+    q = db.session.query(Quotes.nickname.distinct())
     for s in q.all():
         yield s[0]
 
@@ -120,7 +120,7 @@ def redir_to_page():
 
 @app.route("/quotes/page/<int:page>")
 def show_quotes(page=1):
-    return render_template("list_quotes.html", quotes=Quotes.query.paginate(page, ), channels=get_channels(), submitters=get_submitters())
+    return render_template("list_quotes.html", quotes=Quotes.query.paginate(page), channels=get_channels(), submitters=get_submitters())
 
 @app.route("/quotes/id/<int:quote_id>")
 def show_quote_id(quote_id):
