@@ -56,7 +56,7 @@ nav.register_element("top", Navbar(
     "PyQdbS",
     View("Hello", 'hello'),
     View("Add a Quote", 'add_quote'),
-    View("Show Quotes", 'show_quotes'),
+    View("Show Quotes", 'show_quotes', page=1),
 
     Subgroup("Other Stuff",
         Link("GitHub", "https://github.com/miniCruzer/PyQdbS"),
@@ -111,7 +111,10 @@ def get_submitters():
         yield s[0]
 
 @app.route("/quotes/")
-@app.route("/quotes/<int:page>")
+def redir_to_page():
+    return redirect(url_for('show_quotes', page=1))
+
+@app.route("/quotes/page/<int:page>")
 def show_quotes(page=1):
     return render_template("list_quotes.html", quotes=Quotes.query.paginate(page, 2), channels=get_channels(), submitters=get_submitters())
 
