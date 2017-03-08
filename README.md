@@ -17,6 +17,7 @@ All modules are available from PyPi.
 - Flask
 - flask_nav
 - flask_bootstrap
+- flask_sqlalchemy
 - WTForms
 - flup6 (for deploying with WSGI)
 
