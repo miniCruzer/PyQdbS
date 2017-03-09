@@ -35,8 +35,6 @@ def hello():
 @frontend.route("/add", methods=[ "GET", "POST" ])
 def add_quote():
 
-    print(request.method)
-
     if current_app.config["PYQDBS_ENABLE_RECAPTCHA"]:
         form = forms.AddQuoteRecaptcha(request.form)
     else:
@@ -66,7 +64,8 @@ def redir_to_page():
 
 @frontend.route("/quotes/page/<int:page>")
 def show_quotes(page=1):
-    return render_template("list_quotes.html", quotes=Quotes.query.paginate(page, current_app.config['PQYDBS_QUOTES_PER_PAGE']), channels=get_channels(), submitters=get_submitters())
+    return render_template("list_quotes.html", quotes=Quotes.query.paginate(page, current_app.config['PQYDBS_QUOTES_PER_PAGE']), 
+        channels=get_channels(), submitters=get_submitters())
 
 @frontend.route("/quotes/id/<int:quote_id>")
 def show_quote_id(quote_id):
@@ -76,11 +75,13 @@ def show_quote_id(quote_id):
 @frontend.route("/quotes/channel/<string:channel>/page/<int:page>")
 def show_quote_channel(channel, page=1):
     q = Quotes.query.filter(Quotes.channel == channel)
-    return render_template("list_quotes.html", quotes=q.paginate(page, current_app.config['PQYDBS_QUOTES_PER_PAGE']), criteria="from %s" % channel, channels=get_channels(), submitters=get_submitters())
+    return render_template("list_quotes.html", quotes=q.paginate(page, current_app.config['PQYDBS_QUOTES_PER_PAGE']),
+        criteria="from %s" % channel, channels=get_channels(), submitters=get_submitters())
 
 @frontend.route("/quotes/submitter/<string:nick>")
 @frontend.route("/quotes/submitter/<string:nick>/page/<int:page>")
 def show_quote_submitter(nick, page=1):
     q = Quotes.query.filter(Quotes.nickname == nick)
-    return render_template("list_quotes.html", quotes=q.paginate(page, current_app.config['PQYDBS_QUOTES_PER_PAGE']), criteria="submitted by %s" % nick, channels=get_channels(), submitters=get_submitters())
+    return render_template("list_quotes.html", quotes=q.paginate(page, current_app.config['PQYDBS_QUOTES_PER_PAGE']),
+        criteria="submitted by %s" % nick, channels=get_channels(), submitters=get_submitters())
 

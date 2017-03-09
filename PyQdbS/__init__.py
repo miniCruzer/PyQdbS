@@ -10,15 +10,16 @@ from .frontend import frontend
 
 def create_app(config):
 
-    print("config = %s" % config)
-
     app = Flask(__name__)
+
+    app.logger.info("using config {}".format(config))
 
     # load config
 
     app.config.from_object(__name__)
     app.config.from_object("PyQdbS.config.{}".format(config))
     app.config['DEBUG'] = 1
+
     if app.config.get('PYQDBS_PPRINT_CONFIG', False):
         pprint.pprint(app.config)
 
@@ -29,7 +30,27 @@ def create_app(config):
 
     if app.config['PYQDBS_ENABLE_ADMIN']:
         from .admin import admin
+        from .auth import bcrypt, login_manager
+
+        bcrypt.init_app(app)
+        login_manager.init_app(app)
         admin.init_app(app)
+
+        @app.cli.command("admin")
+        def create_admin():
+            """ creates an admin user """
+            import string, random
+            from .auth import Users
+
+            passwd = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits + string.ascii_lowercase) for _ in range(12))
+
+            u = Users("admin", bcrypt.generate_password_hash(passwd).decode("utf-8")) ## decode this since PostgreSQL doesn't store unicode the same as SQLite.
+            Users.query.filter(Users.username == "admin").delete()
+
+            db.session.add(u)
+            db.session.commit()
+
+            print("username: admin\npassword: {}".format(passwd))
 
     app.register_blueprint(frontend)
 

@@ -19,8 +19,10 @@ All modules are available from PyPi.
 - flask_bootstrap
 - flask_sqlalchemy
 - flask_wtf
+- flask_admin (optional: only required for the admin interface)
+- flask_login (optional: only required for the admin interface)
 - WTForms
-- flup6 (for deploying with WSGI)
+- flup6 (optional: only for deploying with WSGI)
 
 ## Installation
 
@@ -34,7 +36,6 @@ All modules are available from PyPi.
 ### Configuration
 
 Edit the ProductionConfig class in `PyQdbS/config.py` and read the comments on each line to understand how each option works.
-
 
 ### Deploying
 
@@ -81,6 +82,10 @@ If you would like to use reCAPTCHA with PyQdbS, you need to register with Google
 This table is from the Flask-WTF documentation page [here](https://flask-wtf.readthedocs.io/en/latest/form.html#recaptcha).
 You can see more settings for the HTML forms in this application [here](https://flask-wtf.readthedocs.io/en/latest/config.html).
 
+## Admin
+
+The admin interface is enabled by default, and can be disabled by setting `PQYDBS_ENABLE_ADMIN` to False. Use the command `flask admin` to create an administrator user. The password will be printed out. If you forget the password, you can re-run `flask admin`.
+
 ## Notice
 
 This is my first time working with Flask and Bootstrap. If you have any suggestions, or anything I'm doing is Not The Right Thing To Do, please open an issue.
@@ -90,7 +95,9 @@ This is my first time working with Flask and Bootstrap. If you have any suggesti
 Some goals for the project. 
 
 - [X] Anti-Spam
-- [ ] Admin feature (editing, deleting, quote approval)
+- [X] Admin feature (editing, deleting)
+  - [ ] Set admin password after logging in
+- [X] Quote approval *
 - [ ] Upvote / Downvote *
 - [ ] Auto-remove timestamps from Add Quote
 - [ ] RESTful API, probably Flask-Rest
