@@ -22,7 +22,7 @@ All modules are available from PyPi.
 - flask_admin (optional: only required for the admin interface)
 - flask_login (optional: only required for the admin interface)
 - WTForms
-- flup6 (optional: only for deploying with WSGI)
+- uwsgi (optional: only for deploying with WSGI)
 
 ## Installation
 
@@ -46,24 +46,29 @@ A reverse proxy will work, but is not a good idea.
 
 #### WSGIServer
 
-This assumes you have PyQdbS installed as a 'qdbs' user with a $HOME of `/var/lib/qdbs`, and the PyQdbS repository at `/var/lib/qdbs/pyqdbs/`
+This assumes you have PyQdbS installed as a 'qdbs' user with a $HOME of `/var/lib/qdbs`, and the PyQdbS repository at `/var/lib/qdbs/pyqdbs/`.
 
-1. If needed, edit `qdbs.fcgi` if you would like to change where the UNIX scoket gets created. Your web-server will need permission to speak to this file.
-2. Optionally create an init script to launch this service for you. An OpenRC init script is provided in the dist folder that can be adapted to your setup.
-3. Configure nginx. You'll want some location blocks, similar to this:
+I recommend using nginx with the uwsgi protocol.
+
+The following command in the root directory of the PyQdbS repo should work. You can adjust the mount point to "/quotes" instead of "/", or anything else you desire.
+Since nginx and PyQdbS run in separate processes, I put the nginx user in a a group with the PyQdbS user, and give the uwsgi.sock file a umask of 0770.
+
+```
+$ uwsgi -s /var/lib/qdbs/uwsgi.sock --manage-script-name --mount /=pyqdbs:app
+$ chmod 0770 /var/lib/qdbs/uwsgi.sock
+
+```
+You'll want your nginx config locations to look something like this within your `server { }` block.
 
 ```
 location / {
-
     try_files $uri @pyqdbs;
 }
 
-location @pyqdbs {
+    location @pyqdbs {
 
-    include             fastcgi_params;
-    fastcgi_param       PATH_INFO $fastcgi_script_name;
-    fastcgi_param       SCRIPT_NAME "";
-    fastcgi_pass        unix:/var/lib/qdbs/fcgi.sock;
+    include         uwsgi_params;
+    uwsgi_pass      unix:/var/lib/qdbs/uwsgi.sock;
 }
 ```
 
@@ -73,11 +78,11 @@ If you would like to use reCAPTCHA with PyQdbS, you need to register with Google
 
 | Setting               |            | Description                                                                             |
 | ----------------------|------------|-----------------------------------------------------------------------------------------|
-| RECAPTCHA_PUBLIC_KEY 	| *required* | A public key.                                                                           |
+| RECAPTCHA_PUBLIC_KEY  | *required* | A public key.                                                                           |
 | RECAPTCHA_PRIVATE_KEY | *required* | A private key.                                                                          |
-| RECAPTCHA_API_SERVER 	| optional   | Specify your Recaptcha API server.                                                      |
-| RECAPTCHA_PARAMETERS 	| optional   | A dict of JavaScript (api.js) parameters.                                               |
-| RECAPTCHA_DATA_ATTRS 	| optional   | A dict of data attributes options. https://developers.google.com/recaptcha/docs/display |
+| RECAPTCHA_API_SERVER  | optional   | Specify your Recaptcha API server.                                                      |
+| RECAPTCHA_PARAMETERS  | optional   | A dict of JavaScript (api.js) parameters.                                               |
+| RECAPTCHA_DATA_ATTRS  | optional   | A dict of data attributes options. https://developers.google.com/recaptcha/docs/display |
 
 This table is from the Flask-WTF documentation page [here](https://flask-wtf.readthedocs.io/en/latest/form.html#recaptcha).
 You can see more settings for the HTML forms in this application [here](https://flask-wtf.readthedocs.io/en/latest/config.html).

@@ -1,11 +1,13 @@
 #!/sbin/openrc-run
 
-PYQBDS_CFG="/var/lib/qdbs/pyqdbs/pyqdbs.cfg"
+command="/usr/bin/uwsgi"
 
-command="/usr/bin/python3.5"
-command_args="/var/lib/qdbs/pyqdbs/qdbs.fcgi"
+command_args="-s /var/lib/qdbs/uwsgi.sock --manage-script-name --mount /=pyqdbs:app"
+
 command_dir="/var/lib/qdbs/pyqdbs/"
+
 command_user="qdbs"
+
 command_background="yes"
 pidfile="/run/${SVCNAME}.pid"
 start_stop_daemon_args="--chdir ${command_dir} -w 400"
@@ -15,8 +17,8 @@ depend()
         use     dns net time
 }
 
+
 start_post()
 {
-	sleep 3
-	chmod g+rwx,o-rwx "/var/lib/qdbs/fcgi.sock"
+	chmod g+rwx /var/lib/qdbs/uwsgi.sock
 }

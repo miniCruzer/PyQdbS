@@ -7,4 +7,4 @@ flask_nav
 flask_sqlalchemy
 flask_wtf
 wtforms
-flup6
+uwsgi
