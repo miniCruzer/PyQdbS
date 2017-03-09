@@ -65,7 +65,7 @@ location / {
     try_files $uri @pyqdbs;
 }
 
-    location @pyqdbs {
+location @pyqdbs {
 
     include         uwsgi_params;
     uwsgi_pass      unix:/var/lib/qdbs/uwsgi.sock;
