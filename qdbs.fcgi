@@ -1,7 +1,7 @@
 #!/usr/bin/python3.5
 
 from flup.server.fcgi import WSGIServer
-from main import app
+from PyQdbS import create_app
 
 if __name__ == '__main__':
-    WSGIServer(app, bindAddress='/var/lib/qdbs/fcgi.sock').run()
+    WSGIServer(create_app("ProductionConfig"), bindAddress='/var/lib/qdbs/fcgi.sock').run()

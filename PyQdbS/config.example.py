@@ -9,7 +9,7 @@ class DefaultConfig(object):
     PQYDBS_QUOTES_PER_PAGE          = 15
 
     # enable the Admin interface? creates an /admin page
-    PQYDBS_ENABLE_ADMIN             = True
+    PYQDBS_ENABLE_ADMIN             = True
 
     # enable the RESTful API? served on /api, can be used to add/retrieve quotes easily via an IRC bot or something
     PYQDBS_ENABLE_RESTFUL_API       = True
