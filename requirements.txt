@@ -7,5 +7,6 @@ flask_nav
 flask_rest
 flask_sqlalchemy
 flask_wtf
+psycopg2
 wtforms
 uwsgi
