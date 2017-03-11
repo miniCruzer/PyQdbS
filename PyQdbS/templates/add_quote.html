@@ -24,10 +24,11 @@
         {{ wtf.form_field(form.channel) }}
         {{ wtf.form_field(form.nick) }}
         {{ wtf.form_field(form.quote, rows=20) }}
+        {{ wtf.form_field(form.tags) }}
         {% if form.recaptcha %}
         {{ wtf.form_field(form.recaptcha) }}
         {% endif %}
-        <input type="submit" class="btn btn-info" value="Submit Quote">
+        {{ wtf.form_field(form.submit) }}
         <br>
     </form>
 

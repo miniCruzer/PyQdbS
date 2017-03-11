@@ -27,8 +27,8 @@ All modules are available from PyPi.
 ## Installation
 
 1. Clone this repository.
-2. Install the dependencies via `pip install -r requirements.txt`
-3. Initialize the database. You can run `flask initdb` to do this.
+2. Install the dependencies via `pip install -U -r requirements.txt`
+3. Initialize the database. You can run `flask initdb` to do this. If you are using the admin interface, run `flask admin` too.
 4. Rename `PyQdbS/config.example.py` to `PyQdbS/config.py`.
 
 :warning:Change the SECRET_KEY in the config or sessions will not be secure, as they are cryptographically signed by Flask.:warning:
@@ -97,12 +97,12 @@ This is my first time working with Flask and Bootstrap. If you have any suggesti
 
 ## TODO
 
-Some goals for the project. 
+Some goals for the project.
 
 - [X] Anti-Spam
 - [X] Admin feature (editing, deleting)
-  - [ ] Set admin password after logging in
-- [X] Quote approval *
+  - [X] Set admin password after logging in
+- [ ] Quote approval *
 - [ ] Upvote / Downvote *
 - [ ] Auto-remove timestamps from Add Quote
 - [ ] RESTful API, probably Flask-Rest

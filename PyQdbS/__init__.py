@@ -2,11 +2,9 @@ import os, pprint
 
 from flask import Flask
 from flask_bootstrap import Bootstrap
-
 from .navbar import nav
 from .models import db
 from .frontend import frontend
-
 
 def create_app(config):
 
@@ -28,7 +26,7 @@ def create_app(config):
     nav.init_app(app)
     db.init_app(app)
 
-    if app.config['PYQDBS_ENABLE_ADMIN']:
+    if app.config.get('PYQDBS_ENABLE_ADMIN', False):
         from .admin import admin
         from .auth import bcrypt, login_manager
 
@@ -44,13 +42,18 @@ def create_app(config):
 
             passwd = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits + string.ascii_lowercase) for _ in range(12))
 
-            u = Users("admin", bcrypt.generate_password_hash(passwd).decode("utf-8")) ## decode this since PostgreSQL doesn't store unicode the same as SQLite.
+            hashedpw = bcrypt.generate_password_hash(passwd).decode() # decode this since PostgreSQL doesn't store unicode the same as SQLite.
+            u = Users("admin", hashedpw, make_admin=True)
             Users.query.filter(Users.username == "admin").delete()
 
             db.session.add(u)
             db.session.commit()
 
             print("username: admin\npassword: {}".format(passwd))
+
+    if app.config.get('PYQDBS_ENABLE_RESTAPI', False):
+        from .restapi import api
+        api.init_app(app)
 
     app.register_blueprint(frontend)
 

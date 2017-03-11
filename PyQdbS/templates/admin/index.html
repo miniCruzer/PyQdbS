@@ -8,7 +8,7 @@
 <div class="container">
 
 	{% if current_user.is_authenticated %}
-	<h1>Hey there, admin guy!</h1>
+	<h1>Hey there, admin guy! ({{ current_user.username }})</h1>
 	<p>Not much to see here. You can get a CRUD view of all quotes if you click Quotes in the Nav Bar above.</p>
 
 	<a href="{{ url_for('admin.logout') }}">Log Out?</a>

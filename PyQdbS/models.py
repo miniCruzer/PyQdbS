@@ -18,3 +18,14 @@ class Quotes(db.Model):
 
     def __repr__(self):
         return "<Quote %i>" % self.id
+
+    def serialize(self):
+
+        return {
+
+            "id"            : self.id,
+            "timestamp"     : str(self.timestamp),
+            "submitter"     : self.nickname,
+            "channel"       : self.channel,
+            "quote"         : self.quote
+        }

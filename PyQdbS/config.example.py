@@ -6,7 +6,7 @@ class DefaultConfig(object):
     SECRET_KEY                      = __NOT_SET__
 
     # how many quotes to display per page before paginating
-    PQYDBS_QUOTES_PER_PAGE          = 15
+    PYQDBS_QUOTES_PER_PAGE          = 15
 
     # enable the Admin interface? creates an /admin page
     PYQDBS_ENABLE_ADMIN             = True
@@ -30,7 +30,7 @@ class DefaultConfig(object):
     SQLALCHEMY_DATABASE_URI         = "sqlite:///:memory:"
 
 class ProductionConfig(DefaultConfig):
-    # use the default SQLite database 
+    # use the default SQLite database
     SQLALCHEMY_DATABASE_URI         = "sqlite:///../qdbs.db"
 
     # or if you'd rather use PostgreSQL you can do that too.

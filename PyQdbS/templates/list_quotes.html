@@ -2,55 +2,61 @@
 {% from "bootstrap/pagination.html" import render_pagination %}
 {% block title %}Show Quotes {{ super() }}{% endblock %}
 
+{% macro render_quote(quote) -%}
+<li class="list-group-item">
+    <b>ID</b> <a href="{{ url_for('frontend.show_quote_id', quote_id=quote.id) }}">{{ quote.id }}</a> <b>
+    from</b>: <a href="{{ url_for('frontend.show_quote_channel', channel=quote.channel) }}">{{ quote.channel }}</a>
+    <b>submitted by</b> <a href="{{ url_for('frontend.show_quote_submitter', nick=quote.nickname) }}">{{ quote.nickname }}</a> <b>on</b> {{ quote.timestamp }} UTC<br><pre>{{ quote.quote }}</pre>
+</li>
+{%- endmacro %}
+
 {% block container %}
 {% if channels or submitters %}
 <div class="dropdown">
 
-	<button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" id="channelDropDownMenu">
-		Filter
-		<span class="caret"></span>
+    <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" id="channelDropDownMenu">
+        Filter
+        <span class="caret"></span>
 
-	</button>
+    </button>
 
-	<ul class="dropdown-menu" aria-labelledby="channelDropDownMenu">
+    <ul class="dropdown-menu" aria-labelledby="channelDropDownMenu">
 
-		{% if channels %}
-			<li class="dropdown-header">Channels</li>
-			{% for chan in channels %}
-				<li><a href="{{ url_for('frontend.show_quote_channel', channel=chan) }}">{{ chan }}</a></li>
-			{% endfor %}
-		{% endif %}
+        {% if channels %}
+            <li class="dropdown-header">Channels</li>
+            {% for chan in channels %}
+                <li><a href="{{ url_for('frontend.show_quote_channel', channel=chan) }}">{{ chan }}</a></li>
+            {% endfor %}
+        {% endif %}
 
-		{% if submitters %}
-			<li class="dropdown-header">Submitters</li>
-			{% for nick in submitters %}
-				<li><a href="{{ url_for('frontend.show_quote_submitter', nick=nick) }}">{{ nick }}</a></li>
-			{% endfor %}
-		{% endif %}
-	</ul>
+        {% if submitters %}
+            <li class="dropdown-header">Submitters</li>
+            {% for nick in submitters %}
+                <li><a href="{{ url_for('frontend.show_quote_submitter', nick=nick) }}">{{ nick }}</a></li>
+            {% endfor %}
+        {% endif %}
+    </ul>
 
 </div>
 <br>
 {% endif %}
 
 {% if criteria %}
-	<div class="alert alert-info" role="alert">Showing quotes {{ criteria }}.</div>
+    <div class="alert alert-info" role="alert">Showing quotes {{ criteria }}.</div>
 {% endif %}
 
-	{% if quotes.items %}
-	{{ render_pagination(quotes) }}
-	<ul class="list-group">
-	{% for quote in quotes.items %}
-		<li class="list-group-item">
-			<b>ID</b> <a href="{{ url_for('frontend.show_quote_id', quote_id=quote.id) }}">{{ quote.id }}</a> <b>
-			from</b>: <a href="{{ url_for('frontend.show_quote_channel', channel=quote.channel) }}">{{ quote.channel }}</a>
-			<b>submitted by</b> <a href="{{ url_for('frontend.show_quote_submitter', nick=quote.nickname) }}">{{ quote.nickname }}</a> <b>on</b> {{ quote.timestamp }} UTC<br><pre>{{ quote.quote }}</pre>
-		</li>
-	{% endfor %}
-	{{ render_pagination(quotes) }}
-	{% else %}
-		<h3>Unbelievable.  No quotes so far.</h3>
-	{% endif %}
-	</ul>
+    {% if quotes.items %}
+    {{ render_pagination(quotes) }}
+    <ul class="list-group">
+    {% for quote in quotes.items %}
+        {{ render_quote(quote) }}
+    {% endfor %}
+    {{ render_pagination(quotes) }}
+    {% elif quotes %}
+        {{ render_quote(quotes) }}
+    {% else %}
+        <h3>Unbelievable. No quotes so far.</h3>
+    {% endif %}
+    </ul>
 
 {% endblock %}

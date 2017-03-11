@@ -8,6 +8,7 @@ nav.register_element("top", Navbar(
     View("Hello", 'frontend.hello'),
     View("Add a Quote", 'frontend.add_quote'),
     View("Show Quotes", 'frontend.show_quotes', page=1),
+    View("Random Quote", 'frontend.show_quote_random'),
     View("Admin", "admin.index"),
 
     Subgroup("Other Stuff",

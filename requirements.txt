@@ -4,6 +4,7 @@ flask_bcrypt
 flask_bootstrap
 flask_login
 flask_nav
+flask_rest
 flask_sqlalchemy
 flask_wtf
 wtforms
