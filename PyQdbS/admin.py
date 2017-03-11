@@ -2,7 +2,6 @@ from flask import request
 from flask import redirect
 from flask import url_for
 from flask import flash
-from flask import abort
 from flask import current_app
 
 from wtforms import TextAreaField, validators
@@ -29,10 +28,7 @@ class PyQdbSQuoteModelView(ModelView):
 
     form_exclude_list = [ 'timestamp' ]
     form_excluded_columns = [ 'timestamp' ]
-    form_overrides = {
-
-        'quote': TextAreaField
-    }
+    form_overrides = {  'quote': TextAreaField }
 
     form_args = {
 
@@ -60,17 +56,12 @@ class PyQdbSQuoteModelView(ModelView):
 
 class PyQdbSUserModelView(ModelView):
 
-    form_overrides = {
+    form_overrides = { password': BcryptPasswordField' }
 
-        'password': BcryptPasswordField
-    }
-
-    form_args = {
-
-        'username': { 'validators': [ validators.required() ]}
-    }
+    form_args = { 'username': { 'validators': [ validators.required() ]} }
 
     column_labels = {
+
         'allow_api': 'Allow API?',
         'is_admin': 'Is Admin?'
     }
@@ -96,7 +87,6 @@ class PyQdbSUserModelView(ModelView):
         new = model.session_token
         current_app.logger.debug("created a new session token for {}. {} -> {}".format(model, prev, new))
 
-
     def is_accessible(self):
         return flask_login.current_user.is_authenticated
 
@@ -114,13 +104,9 @@ class PyQdbSAdminIndexView(AdminIndexView):
         form = LoginForm(request.form)
 
         if form.validate_on_submit():
-
             user = Users.query.filter(Users.username == form.username.data).first()
-
             if user and user.has_admin() and user.check_password(form.password.data):
-
                 flask_login.login_user(user)
-
                 return redirect(url_for('admin.index'))
             else:
                 flash("Invalid username or password.")
@@ -138,13 +124,3 @@ class PyQdbSAdminIndexView(AdminIndexView):
 admin = Admin(index_view=PyQdbSAdminIndexView())
 admin.add_view(PyQdbSQuoteModelView(Quotes, db.session))
 admin.add_view(PyQdbSUserModelView(Users, db.session))
-
-if __name__ == "__main__":
-    print("""
-     cruzr │ rlygd CRUD view https://puu.sh/uAuGF/77ebda8794.png
-  Lucifer7 │ it's CRUD alright xD
-  Lucifer7 │ jk it's cool
-     cruzr │ wow how dare you insult me
-     cruzr │ > = [
-  Lucifer7 │ :((((""")
-

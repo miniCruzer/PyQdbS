@@ -94,7 +94,7 @@ def user_loader(session_token):
         current_app.logger.critical("bad signature from user's session token: {}".format(session_token))
         return
 
-    u =  Users.query.filter(Users.session_token == str(session_token)).first()
+    u =  Users.query.filter(Users.session_token == str(session_token)).first() # str here because of PostgreSQL
     if u:
         # verify token to make sure it hasn't been tampered with while in the database
         if not signer.validate(u.session_token):
