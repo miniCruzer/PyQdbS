@@ -56,7 +56,7 @@ class PyQdbSQuoteModelView(ModelView):
 
 class PyQdbSUserModelView(ModelView):
 
-    form_overrides = { password': BcryptPasswordField' }
+    form_overrides = { 'password': BcryptPasswordField }
 
     form_args = { 'username': { 'validators': [ validators.required() ]} }
 
