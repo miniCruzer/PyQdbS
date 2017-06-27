@@ -28,7 +28,6 @@ def add_quote():
         form = forms.AddQuote(request.form)
 
     if request.method == 'POST' and form.validate():
-        print("POST")
         quotemgr.add_quote_fromform(form)
         flash("Your quote has been submitted.")
         return redirect(url_for("frontend.add_quote"))
