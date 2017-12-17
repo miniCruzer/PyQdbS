@@ -10,4 +10,5 @@ venv
 # custom
 *.db
 pyqdbs.cfg
-config.py
+.vscode/
+.mypy_cache/
