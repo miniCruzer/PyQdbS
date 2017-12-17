@@ -1,6 +1,8 @@
 from sqlalchemy.sql.expression import func
-from PyQdbS.models import db, Quotes
+
 from PyQdbS import utils
+from PyQdbS.models import Quotes, db
+
 
 def add_quote(chan, nick, quote):
 

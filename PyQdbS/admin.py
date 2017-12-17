@@ -1,22 +1,13 @@
-from flask import request
-from flask import redirect
-from flask import url_for
-from flask import flash
-from flask import current_app
-
+import flask_login
+from flask import current_app, flash, redirect, request, url_for
+from flask_admin import Admin, AdminIndexView, expose
+from flask_admin.contrib.sqla import ModelView
 from wtforms import TextAreaField, validators
 
-import flask_login
-
-from flask_admin import Admin
-from flask_admin import AdminIndexView
-from flask_admin import expose
-from flask_admin.contrib.sqla import ModelView
-
-from PyQdbS.auth import Users
-from PyQdbS.auth import BcryptPasswordField
+from PyQdbS.auth import BcryptPasswordField, Users
 from PyQdbS.forms import LoginForm
 from PyQdbS.models import Quotes, db
+
 
 class PyQdbSQuoteModelView(ModelView):
 

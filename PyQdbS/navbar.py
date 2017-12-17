@@ -1,5 +1,5 @@
 from flask_nav import Nav
-from flask_nav.elements import *
+from flask_nav.elements import Navbar, Link, Subgroup, View
 
 nav = Nav()
 
@@ -13,7 +13,6 @@ nav.register_element("top", Navbar(
 
     Subgroup("Other Stuff",
         Link("GitHub", "https://github.com/miniCruzer/PyQdbS"),
-        Link("AlphaChat", "https://www.alphachat.net/"),
-        Link("Shitposted", "https://shitposted.com/"),
+        Link("AlphaChat", "https://www.alphachat.net/")
     )
 ))

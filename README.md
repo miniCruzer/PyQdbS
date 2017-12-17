@@ -3,9 +3,10 @@
 This is one of those silly quote database systems similar to the original [QdbS](http://www.qdbs.org/news.php) system in PHP.
 The original QdbS hasn't been updated since 2007, and it's written in PHP. No thanks. :-1:
 
-I only build/test on Python 3.5 and later. It might work on earlier versions of Python.
+I only build/test on Python 3.6.
 
 You can see a live version of this at [nou.fyi](https://www.nou.fyi) used on [AlphaChat](https://www.alphachat.net).
+There is also a [Heroku](https://pyqdbs.herokuapp.com/) deployed version as well which is updated in lockstep with this GitHub repository.
 
 This repository is still **highly alpha** software, and is very subject to changes in requirements, dependencies, and SQL schema (e.g. your quotes database becomes incompatible).
 
@@ -20,16 +21,20 @@ This repository is still **highly alpha** software, and is very subject to chang
 
 All modules are available from PyPi.
 
-- Python 3.5 or later
+- Python 3.6 or later
 - Flask
 - flask_nav
 - flask_bootstrap
+- flask_bcrypt
+- flask_login
 - flask_sqlalchemy
+- psycopg2 (only if using PostgreSQL)
 - flask_wtf
 - flask_admin (optional: only required for the admin interface)
 - flask_login (optional: only required for the admin interface)
+- flask_restful (optional: only required for the REST API)
 - WTForms
-- uwsgi (optional: only for deploying with WSGI)
+- uwsgi, gunicorn, or some other WSGI server (optional: only for deploying with WSGI)
 
 ## Installation
 

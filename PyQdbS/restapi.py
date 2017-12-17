@@ -1,19 +1,16 @@
-from flask_restful import Resource, Api
-from flask_restful import reqparse
-
 import flask_login
+from flask_restful import Api, Resource, reqparse
 
-from PyQdbS import utils
-from PyQdbS import quotemgr
+from PyQdbS import quotemgr, utils
 from PyQdbS.auth import login_manager
 
 api = Api()
 
-QuoteAddedSuccess   = { "result": "success" }
-QuoteInvalid        = { "result": "failure", "reason": "invalid quote format" }
-QuoteNotFound       = { "result": "failure", "reason": "no such quote" }
+QuoteAddedSuccess = { "result": "success" }
+QuoteInvalid = { "result": "failure", "reason": "invalid quote format" }
+QuoteNotFound = { "result": "failure", "reason": "no such quote" }
 
-InvalidToken        = { "result": "failure", "reason": "invalid token" }
+InvalidToken = { "result": "failure", "reason": "invalid token" }
 
 class QuoteResource(Resource):
     def get(self, quote_id):

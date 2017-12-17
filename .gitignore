@@ -12,3 +12,4 @@ venv
 pyqdbs.cfg
 .vscode/
 .mypy_cache/
+BootstrapDev.sh

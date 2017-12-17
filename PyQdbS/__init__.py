@@ -1,10 +1,13 @@
-import os, pprint
+import os
+import pprint
 
 from flask import Flask
 from flask_bootstrap import Bootstrap
-from .navbar import nav
-from .models import db
+
 from .frontend import frontend
+from .models import db
+from .navbar import nav
+
 
 def create_app(config):
 
@@ -37,10 +40,12 @@ def create_app(config):
         @app.cli.command("admin")
         def create_admin():
             """ creates an admin user """
-            import string, random
+            import string
+            import secrets
             from .auth import Users
 
-            passwd = ''.join(random.SystemRandom().choice(string.ascii_uppercase + string.digits + string.ascii_lowercase) for _ in range(12))
+            passwd = "".join(
+                secrets.choice(string.ascii_letters + string.digits) for i in range(12))
 
             hashedpw = bcrypt.generate_password_hash(passwd).decode() # decode this since PostgreSQL doesn't store unicode the same as SQLite.
             u = Users("admin", hashedpw, make_admin=True)
@@ -49,7 +54,7 @@ def create_app(config):
             db.session.add(u)
             db.session.commit()
 
-            print("username: admin\npassword: {}".format(passwd))
+            print(f"username: admin\npassword: {passwd}")
 
     if app.config.get('PYQDBS_ENABLE_RESTAPI', False):
         from .restapi import api

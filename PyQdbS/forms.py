@@ -1,6 +1,7 @@
 from flask_wtf import FlaskForm, RecaptchaField
 from wtforms import *
 
+
 class TagListField(Field):
 
     widget = widgets.TextInput()

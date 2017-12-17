@@ -1,13 +1,13 @@
-import base64, os
+import base64
+import os
 
 from flask import current_app
+from flask_bcrypt import Bcrypt
+from flask_login import LoginManager
+from itsdangerous import Signer
 from wtforms import *
 
-from flask_login import LoginManager
-from flask_bcrypt import Bcrypt
 from PyQdbS.models import db
-
-from itsdangerous import Signer
 
 login_manager = LoginManager()
 login_manager.session_protection = "strong"
@@ -50,7 +50,7 @@ class Users(db.Model):
         self.make_session_token()
 
     def __repr__(self):
-        return '<User %s>' % self.username
+        return f'<User {self.username}>'
 
     def get_id(self):
         return self.session_token
@@ -82,7 +82,7 @@ class Users(db.Model):
     def make_session_token(self):
         signer = Signer(current_app.config["SECRET_KEY"])
         t= base64.b64encode(os.urandom(24))
-        current_app.logger.debug("created a session token type {}: {}".format(type(t), t))
+        current_app.logger.debug(f"created a session token type {type(t)}: {t}")
         self.session_token = signer.sign(t).decode()
 
 @login_manager.user_loader
@@ -91,15 +91,17 @@ def user_loader(session_token):
 
     # verify the token we're getting hasn't been tampered with.
     if not signer.validate(session_token):
-        current_app.logger.critical("bad signature from user's session token: {}".format(session_token))
+        current_app.logger.critical(f"bad signature from user's session token: {session_token}")
         return
 
-    u =  Users.query.filter(Users.session_token == str(session_token)).first() # str here because of PostgreSQL
+    u =  Users.query.filter(Users.session_token == str(session_token)).first()
     if u:
         # verify token to make sure it hasn't been tampered with while in the database
         if not signer.validate(u.session_token):
-            current_app.logger.critical("bad signature from stored session token: {}".format(u.session_token))
+            current_app.logger.critical(
+                f"bad signature from stored session token: {u.session_token}")
             return
 
-        current_app.logger.debug("loaded user by session token. user: {} token: {}".format(u, u.session_token))
+        current_app.logger.debug(
+            f"loaded user by session token. user: {u} token: {u.session_token}")
         return u
