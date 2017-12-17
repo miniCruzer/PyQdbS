@@ -6,7 +6,7 @@
 <li class="list-group-item">
     <b>ID</b> <a href="{{ url_for('frontend.show_quote_id', quote_id=quote.id) }}">{{ quote.id }}</a> <b>
     from</b>: <a href="{{ url_for('frontend.show_quote_channel', channel=quote.channel) }}">{{ quote.channel }}</a>
-    <b>submitted by</b> <a href="{{ url_for('frontend.show_quote_submitter', nick=quote.nickname) }}">{{ quote.nickname }}</a> <b>on</b> {{ quote.timestamp }} UTC<br><pre>{{ quote.quote }}</pre>
+    <b>submitted by</b> <a href="{{ url_for('frontend.show_quote_submitter', nick=quote.nickname) }}">{{ quote.nickname }}</a> <b>on</b> {{ quote.timestamp.strftime("%m/%d/%Y @ %I:%M %p") }} UTC<br><pre>{{ quote.quote }}</pre>
 </li>
 {%- endmacro %}
 
