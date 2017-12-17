@@ -27,7 +27,7 @@ def strip_color(s: str) -> str:
 
 	return s.replace("\x0f", "")
 
-IRC_TIMESTAMP = re.compile(r"^\[?\d{2}:\d{2}(?::\d{2})?(?: AM| PM)?\]? <", re.M | re.I)
+IRC_TIMESTAMP = re.compile(r"^\[?\d{2}:\d{2}(?::\d{2})?(?: AM| PM)?\]?", re.M | re.I)
 
 def remove_timestamps(s: str) -> str:
-	return IRC_TIMESTAMP.sub("<", quote_str)
+	return IRC_TIMESTAMP.sub("", s)

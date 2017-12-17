@@ -16,6 +16,8 @@ def add_quote_fromform(form):
     if utils.has_color(text):
         text = utils.strip_color(text)
 
+    text = utils.remove_timestamps(text)
+
     add_quote(form.channel.data, form.nick.data, text)
 
 def get_quote_id(quote_id):
