@@ -67,7 +67,8 @@ def show_quote_random():
     q = quotemgr.get_quote_random()
     if not q:
         return render_template("list_quotes.html", quotes=[ ],
-        channels=quotemgr.get_channels(), submitters=quotemgr.get_submitters())
+                               channels=quotemgr.get_channels(),
+                               submitters=quotemgr.get_submitters())
 
     i = q.id
     while i == current_app.config.get("PYQDBS_LAST_RANDOM_QUOTE", -1):
@@ -78,3 +79,25 @@ def show_quote_random():
 
     return render_template("list_quotes.html", quotes=q,
         channels=quotemgr.get_channels(), submitters=quotemgr.get_submitters())
+
+@frontend.route("/quotes/search/<string:term>/<int:page>")
+def show_quotes_search(term, page=1):
+    q = Quotes.query.filter(Quotes.quote.ilike(f"%{term}%"))
+    pages = q.paginate(page, current_app.config['PYQDBS_QUOTES_PER_PAGE'])
+    print(pages)
+
+    return render_template("list_quotes.html", quotes=pages or [], criteria=f"matching {term!r}",
+                           channels=quotemgr.get_channels(), submitters=quotemgr.get_submitters())
+
+
+@frontend.route("/search", methods=["GET", "POST"])
+@frontend.route("/search/<string:term>", methods=["GET", "POST"])
+def search_quotes(term=None):
+
+    form = forms.SearchForm(request.form)
+
+    if request.method == 'POST' and form.validate():
+        return redirect(url_for("frontend.show_quotes_search", term=form.term.data, page=1))
+
+    return render_template("search.html", search_form=form)
+

@@ -20,19 +20,11 @@ def strip_color(s: str) -> str:
 	## ported from IRC::Toolkit
 	## https://metacpan.org/source/AVENJ/IRC-Toolkit-0.092002/lib/IRC/Toolkit/Colors.pm#L58
 
-	# mIRC
 	s = MIRC_COLOR.sub("", s)
-
-	# RGB
 	s = RGB_COLOR.sub("", s)
-
-	# ECMA-48
 	s = ECMA48_COLOR.sub("", s)
-
-	# Formatting codes
 	s = FMT_CODES.sub("", s)
 
-	# Cancellation code
 	return s.replace("\x0f", "")
 
 IRC_TIMESTAMP = re.compile(r"^\[?\d{2}:\d{2}(?::\d{2})?(?: AM| PM)?\]? <", re.M | re.I)

@@ -9,6 +9,7 @@ nav.register_element("top", Navbar(
     View("Add a Quote", 'frontend.add_quote'),
     View("Show Quotes", 'frontend.show_quotes', page=1),
     View("Random Quote", 'frontend.show_quote_random'),
+    View("Search", "frontend.search_quotes"),
     View("Admin", "admin.index"),
 
     Subgroup("Other Stuff",

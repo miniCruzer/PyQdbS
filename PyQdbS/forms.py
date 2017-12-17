@@ -70,3 +70,7 @@ class AddQuote(FlaskForm):
 
 class AddQuoteRecaptcha(AddQuote):
     recaptcha = RecaptchaField()
+
+class SearchForm(FlaskForm):
+    term = StringField("Search Term")
+    submint = SubmitField("Search")
